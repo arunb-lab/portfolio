@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Arun Baral — Backend Developer & Python Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0a0f;
+  --surface:#12121a;
+  --border:#1e1e2e;
+  --accent:#7fffb2;
+  --accent2:#4fc3f7;
+  --text:#e8e8f0;
+  --muted:#6b6b80;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;min-height:100vh;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:all .3s;}
+nav.scrolled{background:rgba(10,10,15,.95);border-bottom-color:var(--border);backdrop-filter:blur(12px);}
+.nav-logo{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--text);letter-spacing:-.01em;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:2rem;align-items:center;}
+.nav-links a{font-size:.85rem;font-weight:400;color:var(--muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;cursor:pointer;}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);}
+.nav-gh{font-size:.8rem;padding:.4rem 1rem;border:1px solid var(--border);border-radius:2px;color:var(--muted);text-decoration:none;transition:all .2s;}
+.nav-gh:hover{border-color:var(--accent);color:var(--accent);}
+
+.page{display:none;min-height:100vh;padding-top:80px;}
+.page.active{display:block;}
+
+/* HOME */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 3rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(127,255,178,.06) 0%,transparent 70%);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-10%;left:5%;width:400px;height:400px;background:radial-gradient(circle,rgba(79,195,247,.04) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{font-family:var(--mono);font-size:.8rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp .6s .2s forwards;}
+.hero h1{font-family:var(--serif);font-size:clamp(3rem,8vw,6rem);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--text);margin-bottom:1.5rem;opacity:0;animation:fadeUp .6s .4s forwards;}
+.hero h1 em{font-style:italic;color:var(--accent);font-weight:400;}
+.hero-desc{max-width:540px;font-size:1rem;line-height:1.8;color:var(--muted);margin-bottom:2.5rem;opacity:0;animation:fadeUp .6s .6s forwards;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .6s .8s forwards;}
+.btn{padding:.75rem 1.8rem;border-radius:2px;font-family:var(--sans);font-size:.85rem;font-weight:500;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:all .2s;border:1px solid;text-decoration:none;display:inline-block;}
+.btn-primary{background:var(--accent);color:#0a0a0f;border-color:var(--accent);}
+.btn-primary:hover{background:transparent;color:var(--accent);}
+.btn-secondary{background:transparent;color:var(--text);border-color:var(--border);}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.hero-stats{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;gap:3rem;opacity:0;animation:fadeUp .6s 1s forwards;flex-wrap:wrap;}
+.stat-num{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--text);}
+.stat-num span{color:var(--accent);}
+.stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+.skills-section{padding:5rem 3rem;border-top:1px solid var(--border);}
+.section-tag{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:3rem;line-height:1.1;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--border);}
+.skill-card{background:var(--bg);padding:2rem;transition:background .2s;}
+.skill-card:hover{background:var(--surface);}
+.skill-icon{font-family:var(--mono);font-size:.8rem;color:var(--accent);margin-bottom:1rem;}
+.skill-name{font-size:1rem;font-weight:500;margin-bottom:.5rem;}
+.skill-desc{font-size:.85rem;color:var(--muted);line-height:1.6;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem;}
+.tag{font-family:var(--mono);font-size:.7rem;padding:.25rem .6rem;border:1px solid var(--border);color:var(--muted);border-radius:2px;}
+
+/* PROJECTS */
+.projects-hero{padding:5rem 3rem 3rem;border-bottom:1px solid var(--border);}
+.projects-hero h2{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+.projects-hero p{font-size:.95rem;color:var(--muted);max-width:500px;line-height:1.7;}
+.projects-list{padding:0 3rem 5rem;}
+.project-item{display:grid;grid-template-columns:80px 1fr;gap:2.5rem;padding:3rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.project-item:hover .proj-num{color:var(--accent);}
+.proj-num{font-family:var(--serif);font-size:3.5rem;font-weight:700;color:var(--border);line-height:1;transition:color .3s;}
+.proj-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.proj-tag{font-family:var(--mono);font-size:.7rem;padding:.2rem .6rem;background:rgba(127,255,178,.08);color:var(--accent);border:1px solid rgba(127,255,178,.2);border-radius:2px;}
+.proj-title{font-family:var(--serif);font-size:1.8rem;font-weight:700;margin-bottom:.75rem;line-height:1.2;}
+.proj-desc{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem;}
+.proj-features{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.2rem;}
+.proj-features li{font-size:.82rem;color:var(--muted);padding-left:1rem;position:relative;}
+.proj-features li::before{content:'→';position:absolute;left:0;color:var(--accent);}
+.proj-stack{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.stack-pill{font-family:var(--mono);font-size:.7rem;padding:.25rem .7rem;border:1px solid var(--border);color:var(--text);border-radius:2px;}
+.proj-link{font-family:var(--mono);font-size:.75rem;color:var(--accent);text-decoration:none;letter-spacing:.06em;border-bottom:1px solid rgba(127,255,178,.3);padding-bottom:1px;transition:border-color .2s;}
+.proj-link:hover{border-color:var(--accent);}
+
+/* mockup styles */
+.proj-mockup{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;aspect-ratio:16/9;display:flex;flex-direction:column;margin-top:1.2rem;}
+.mockup-bar{height:28px;background:#0d0d18;display:flex;align-items:center;padding:0 12px;gap:6px;flex-shrink:0;}
+.mockup-dot{width:8px;height:8px;border-radius:50%;}
+.mockup-body{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+
+/* mockup 1 - fastapi dashboard */
+.fa-top{height:38px;background:#0f1117;border-bottom:1px solid #1e2030;display:flex;align-items:center;padding:0 16px;gap:10px;}
+.fa-logo{font-family:var(--mono);font-size:11px;color:#7fffb2;font-weight:500;}
+.fa-nav{display:flex;gap:6px;margin-left:auto;}
+.fa-nav-i{width:55px;height:7px;background:#1e2030;border-radius:1px;}
+.fa-content{flex:1;display:grid;grid-template-columns:140px 1fr;background:#0a0c12;}
+.fa-side{background:#0d0f1a;border-right:1px solid #1e2030;padding:10px 8px;display:flex;flex-direction:column;gap:4px;}
+.fa-si{height:9px;border-radius:1px;background:#1e2030;}
+.fa-si.act{background:rgba(127,255,178,.25);}
+.fa-main{padding:12px;display:flex;flex-direction:column;gap:8px;}
+.fa-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.fa-stat{background:#0d0f1a;border:1px solid #1e2030;border-radius:2px;padding:6px;}
+.fa-sn{height:9px;background:#7fffb2;border-radius:1px;width:60%;margin-bottom:3px;}
+.fa-sl{height:5px;background:#1e2030;border-radius:1px;}
+.fa-chart{flex:1;background:#0d0f1a;border:1px solid #1e2030;border-radius:2px;padding:8px;display:flex;align-items:flex-end;gap:3px;}
+.fa-bar{background:rgba(127,255,178,.3);border-radius:1px 1px 0 0;flex:1;}
+
+/* mockup 2 - flask app */
+.fl-nav{height:36px;background:#1a1a2e;display:flex;align-items:center;padding:0 14px;gap:8px;}
+.fl-logo{width:70px;height:8px;background:#4fc3f7;border-radius:1px;}
+.fl-n{display:flex;gap:6px;margin-left:auto;}
+.fl-ni{width:40px;height:6px;background:#2a2a3e;border-radius:1px;}
+.fl-body{flex:1;background:#f0f0f5;display:flex;flex-direction:column;padding:10px;}
+.fl-card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;}
+.fl-card{background:#fff;border-radius:3px;padding:8px;border:1px solid #e0e0e8;}
+.fl-ci{width:24px;height:24px;border-radius:50%;background:#e8f4fd;margin-bottom:4px;}
+.fl-ct{height:6px;background:#222;border-radius:1px;margin-bottom:3px;}
+.fl-cp{height:4px;background:#ddd;border-radius:1px;}
+.fl-table{background:#fff;border-radius:3px;border:1px solid #e0e0e8;overflow:hidden;}
+.fl-th{height:20px;background:#f5f5fa;border-bottom:1px solid #e0e0e8;display:flex;align-items:center;padding:0 8px;gap:8px;}
+.fl-thc{flex:1;height:5px;background:#ccc;border-radius:1px;}
+.fl-tr{height:14px;display:flex;align-items:center;padding:0 8px;gap:8px;border-bottom:1px solid #f0f0f5;}
+.fl-td{flex:1;height:4px;background:#eee;border-radius:1px;}
+.fl-td.g{background:#c8f5d8;}
+
+/* mockup 3 - nginx/linux server */
+.srv-body{flex:1;background:#0d1117;font-family:var(--mono);font-size:9px;padding:10px;color:#7fff7f;line-height:1.7;overflow:hidden;}
+.srv-line{display:flex;gap:6px;}
+.srv-prompt{color:#4fc3f7;}
+.srv-cmd{color:#e8e8f0;}
+.srv-out{color:#7fffb2;opacity:.8;}
+.srv-dim{color:#444;}
+
+/* CONTACT */
+.contact-page{padding:5rem 3rem;}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;max-width:900px;}
+.contact-left h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:700;line-height:1.1;margin-bottom:1rem;}
+.contact-left p{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+.contact-info{display:flex;flex-direction:column;gap:1rem;}
+.contact-item{display:flex;gap:1rem;align-items:flex-start;}
+.contact-item-icon{font-family:var(--mono);font-size:.75rem;color:var(--accent);padding-top:.1rem;}
+.contact-item-text{font-size:.85rem;color:var(--muted);}
+.contact-item-label{font-size:.75rem;color:var(--accent);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.06em;}
+.contact-form{display:flex;flex-direction:column;gap:1.2rem;}
+.form-group{display:flex;flex-direction:column;gap:.4rem;}
+.form-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);}
+.form-input{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:.75rem 1rem;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--accent);}
+.form-input::placeholder{color:var(--muted);}
+textarea.form-input{resize:vertical;min-height:120px;}
+.form-submit{padding:.85rem 2rem;background:var(--accent);color:#0a0a0f;border:none;border-radius:2px;font-family:var(--sans);font-size:.85rem;font-weight:500;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:all .2s;align-self:flex-start;}
+.form-submit:hover{background:transparent;color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
+.availability{margin-top:2rem;padding:1.2rem;border:1px solid rgba(127,255,178,.2);background:rgba(127,255,178,.04);border-radius:2px;}
+.avail-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:.5rem;animation:pulse 2s infinite;}
+.avail-text{font-size:.85rem;color:var(--muted);}
+.avail-text strong{color:var(--text);}
+
+footer{padding:2rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:.8rem;color:var(--muted);}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  .hero,.skills-section,.projects-hero,.projects-list,.contact-page{padding-left:1.5rem;padding-right:1.5rem;}
+  .hero h1{font-size:2.8rem;}
+  .hero-stats{gap:1.5rem;}
+  .project-item{grid-template-columns:1fr;}
+  .proj-num{display:none;}
+  .contact-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">Arun<span>.</span>Baral</div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" class="active" id="nav-home">Home</a>
+    <a onclick="showPage('projects')" id="nav-projects">Projects</a>
+    <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+    <a href="https://github.com/arunb-lab" target="_blank" class="nav-gh">GitHub ↗</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-tag">Available for freelance · Kathmandu, Nepal</div>
+    <h1>Backend Dev<br/>&amp; <em>Python</em><br/>Engineer</h1>
+    <p class="hero-desc">I build reliable backend systems, REST APIs, and Python automation tools for clients worldwide. Proficient in FastAPI, Flask, MySQL, Linux, and Nginx — with a focus on clean, maintainable code that actually works in production.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('projects')">View my work</button>
+      <button class="btn btn-secondary" onclick="showPage('contact')">Hire me</button>
+      <a class="btn btn-secondary" href="https://github.com/arunb-lab" target="_blank">GitHub ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">48<span>+</span></div><div class="stat-label">GitHub repos</div></div>
+      <div><div class="stat-num">4<span>+</span></div><div class="stat-label">Years in IT</div></div>
+      <div><div class="stat-num">24<span>h</span></div><div class="stat-label">Response time</div></div>
+    </div>
+  </section>
+
+  <section class="skills-section">
+    <div class="section-tag">What I do</div>
+    <h2 class="section-title">Services &amp; Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">01 / api</div>
+        <div class="skill-name">REST API Development</div>
+        <div class="skill-desc">Production-ready APIs with FastAPI and Flask. Authentication, validation, database integration, and full documentation included.</div>
+        <div class="skill-tags"><span class="tag">FastAPI</span><span class="tag">Flask</span><span class="tag">MySQL</span><span class="tag">REST</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">02 / python</div>
+        <div class="skill-name">Python Automation</div>
+        <div class="skill-desc">Automate repetitive workflows, process files, scrape data, send reports, and schedule tasks — saving your team hours every week.</div>
+        <div class="skill-tags"><span class="tag">Python 3</span><span class="tag">Bash</span><span class="tag">Pandas</span><span class="tag">Selenium</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">03 / server</div>
+        <div class="skill-name">Linux Server Setup</div>
+        <div class="skill-desc">Configure, secure, and deploy web apps on Linux servers using Nginx, GitHub Actions CI/CD, and systemd — from scratch to live.</div>
+        <div class="skill-tags"><span class="tag">Linux</span><span class="tag">Nginx</span><span class="tag">GitHub Actions</span><span class="tag">Bash</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">04 / data</div>
+        <div class="skill-name">Web Scraping &amp; Data</div>
+        <div class="skill-desc">Extract structured data from any website. Deliver clean CSV, JSON, or Excel — with scheduled scraping and email alerts available.</div>
+        <div class="skill-tags"><span class="tag">BeautifulSoup</span><span class="tag">Scrapy</span><span class="tag">SQLite</span><span class="tag">MySQL</span></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-copy">© 2026 Arun Baral — Kathmandu, Nepal</div>
+    <div class="footer-links">
+      <a href="https://github.com/arunb-lab" target="_blank">GitHub</a>
+      <a href="https://twitter.com/arunbral16" target="_blank">Twitter</a>
+      <a href="#" onclick="showPage('contact')">Contact</a>
+    </div>
+  </footer>
+</div>
+
+<!-- PROJECTS -->
+<div class="page" id="page-projects">
+  <div class="projects-hero">
+    <div class="section-tag">Portfolio</div>
+    <h2>Selected Work</h2>
+    <p>Backend systems, automation tools, and deployments showcasing real-world Python and server engineering.</p>
+  </div>
+
+  <div class="projects-list">
+    <!-- Project 1 -->
+    <div class="project-item">
+      <div class="proj-num">01</div>
+      <div>
+        <div class="proj-meta">
+          <span class="proj-tag">FastAPI</span>
+          <span class="proj-tag">MySQL</span>
+          <span class="proj-tag">REST API</span>
+        </div>
+        <h3 class="proj-title">TaskFlow API — Project Management Backend</h3>
+        <p class="proj-desc">A production-ready REST API built with FastAPI and MySQL for a task management system. Includes JWT authentication, role-based access, and auto-generated Swagger docs. Deployed on Linux with Nginx as a reverse proxy.</p>
+        <ul class="proj-features">
+          <li>JWT authentication with refresh token rotation</li>
+          <li>Role-based access control (admin / member / viewer)</li>
+          <li>Full CRUD with pagination and filtering</li>
+          <li>Auto-generated OpenAPI / Swagger documentation</li>
+          <li>Deployed on Linux with Nginx + Gunicorn</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-pill">Python 3</span>
+          <span class="stack-pill">FastAPI</span>
+          <span class="stack-pill">MySQL</span>
+          <span class="stack-pill">Nginx</span>
+          <span class="stack-pill">Linux</span>
+          <span class="stack-pill">GitHub Actions</span>
+        </div>
+        <a class="proj-link" href="https://github.com/arunb-lab" target="_blank">View on GitHub ↗</a>
+        <div class="proj-mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff6058"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#28ca41"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:#444;margin-left:8px;">taskflow-api.arunbaral.dev</span>
+          </div>
+          <div class="mockup-body">
+            <div class="fa-top">
+              <div class="fa-logo">TaskFlow API</div>
+              <div class="fa-nav"><div class="fa-nav-i"></div><div class="fa-nav-i"></div><div class="fa-nav-i"></div></div>
+            </div>
+            <div class="fa-content">
+              <div class="fa-side">
+                <div class="fa-si act"></div>
+                <div class="fa-si"></div>
+                <div class="fa-si"></div>
+                <div class="fa-si"></div>
+                <div class="fa-si"></div>
+              </div>
+              <div class="fa-main">
+                <div class="fa-stats">
+                  <div class="fa-stat"><div class="fa-sn"></div><div class="fa-sl"></div></div>
+                  <div class="fa-stat"><div class="fa-sn" style="background:#4fc3f7;width:45%"></div><div class="fa-sl"></div></div>
+                  <div class="fa-stat"><div class="fa-sn" style="width:80%"></div><div class="fa-sl"></div></div>
+                  <div class="fa-stat"><div class="fa-sn" style="background:#ffbd2e;width:55%"></div><div class="fa-sl"></div></div>
+                </div>
+                <div class="fa-chart">
+                  <div class="fa-bar" style="height:40%"></div>
+                  <div class="fa-bar" style="height:65%"></div>
+                  <div class="fa-bar" style="height:50%"></div>
+                  <div class="fa-bar" style="height:80%"></div>
+                  <div class="fa-bar" style="height:60%"></div>
+                  <div class="fa-bar" style="height:90%"></div>
+                  <div class="fa-bar" style="height:70%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project-item">
+      <div class="proj-num">02</div>
+      <div>
+        <div class="proj-meta">
+          <span class="proj-tag">Flask</span>
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">MySQL</span>
+        </div>
+        <h3 class="proj-title">SchoolTrack — Student Management System</h3>
+        <p class="proj-desc">A full-stack web application built with Flask and MySQL for managing student records, attendance, and grades. Designed with teaching experience in mind — clean UI, simple navigation, and an admin dashboard with exportable reports.</p>
+        <ul class="proj-features">
+          <li>Student enrollment, attendance, and grade tracking</li>
+          <li>Admin dashboard with class-level reports</li>
+          <li>Export to CSV / Excel with one click</li>
+          <li>Secure login system with session management</li>
+          <li>Responsive design — works on any screen</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-pill">Python 3</span>
+          <span class="stack-pill">Flask</span>
+          <span class="stack-pill">MySQL</span>
+          <span class="stack-pill">HTML/CSS</span>
+          <span class="stack-pill">JavaScript</span>
+        </div>
+        <a class="proj-link" href="https://github.com/arunb-lab" target="_blank">View on GitHub ↗</a>
+        <div class="proj-mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff6058"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#28ca41"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:#444;margin-left:8px;">schooltrack.local</span>
+          </div>
+          <div class="mockup-body">
+            <div class="fl-nav"><div class="fl-logo"></div><div class="fl-n"><div class="fl-ni"></div><div class="fl-ni"></div></div></div>
+            <div class="fl-body">
+              <div class="fl-card-row">
+                <div class="fl-card"><div class="fl-ci"></div><div class="fl-ct"></div><div class="fl-cp"></div></div>
+                <div class="fl-card"><div class="fl-ci" style="background:#fef3cd"></div><div class="fl-ct"></div><div class="fl-cp"></div></div>
+                <div class="fl-card"><div class="fl-ci" style="background:#d4edda"></div><div class="fl-ct"></div><div class="fl-cp"></div></div>
+              </div>
+              <div class="fl-table">
+                <div class="fl-th"><div class="fl-thc"></div><div class="fl-thc"></div><div class="fl-thc"></div><div class="fl-thc"></div></div>
+                <div class="fl-tr"><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td g"></div><div class="fl-td"></div></div>
+                <div class="fl-tr"><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td g"></div></div>
+                <div class="fl-tr"><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td g"></div><div class="fl-td"></div></div>
+                <div class="fl-tr"><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td"></div><div class="fl-td"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project-item">
+      <div class="proj-num">03</div>
+      <div>
+        <div class="proj-meta">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Linux</span>
+          <span class="proj-tag">Nginx</span>
+          <span class="proj-tag">GitHub Actions</span>
+        </div>
+        <h3 class="proj-title">AutoDeploy — CI/CD Pipeline with Linux &amp; Nginx</h3>
+        <p class="proj-desc">A complete automated deployment pipeline for Python web apps. Pushes to GitHub trigger automatic tests, build, and deployment to a Linux VPS via GitHub Actions — with Nginx routing and zero-downtime restarts using systemd.</p>
+        <ul class="proj-features">
+          <li>GitHub Actions workflow: test → build → deploy on push</li>
+          <li>Nginx reverse proxy with SSL (Let's Encrypt)</li>
+          <li>Zero-downtime restarts via systemd service management</li>
+          <li>Bash scripts for server provisioning from scratch</li>
+          <li>Automated rollback on failed deployment</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-pill">Linux</span>
+          <span class="stack-pill">Nginx</span>
+          <span class="stack-pill">Bash</span>
+          <span class="stack-pill">GitHub Actions</span>
+          <span class="stack-pill">systemd</span>
+          <span class="stack-pill">Python</span>
+        </div>
+        <a class="proj-link" href="https://github.com/arunb-lab" target="_blank">View on GitHub ↗</a>
+        <div class="proj-mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff6058"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#28ca41"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:#444;margin-left:8px;">bash — ssh deploy@vps</span>
+          </div>
+          <div class="mockup-body">
+            <div class="srv-body">
+              <div class="srv-line"><span class="srv-prompt">arun@vps:~$</span><span class="srv-cmd">sudo systemctl status nginx</span></div>
+              <div class="srv-line"><span class="srv-out">● nginx.service - A high performance web server</span></div>
+              <div class="srv-line"><span class="srv-out" style="color:#7fffb2;">   Active: active (running) since Mon 2026-03-22</span></div>
+              <div class="srv-line"><span class="srv-dim">   Docs: man:nginx(8)</span></div>
+              <div class="srv-line" style="margin-top:6px;"><span class="srv-prompt">arun@vps:~$</span><span class="srv-cmd">cd /var/www/taskflow &amp;&amp; git pull</span></div>
+              <div class="srv-line"><span class="srv-out">Already up to date.</span></div>
+              <div class="srv-line" style="margin-top:6px;"><span class="srv-prompt">arun@vps:~$</span><span class="srv-cmd">sudo systemctl restart taskflow.service</span></div>
+              <div class="srv-line"><span class="srv-out" style="color:#4fc3f7;">[✓] Deployment complete. Zero downtime.</span></div>
+              <div class="srv-line" style="margin-top:4px;"><span class="srv-prompt">arun@vps:~$</span><span class="srv-cmd" style="opacity:.4;">_</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">© 2026 Arun Baral — Kathmandu, Nepal</div>
+    <div class="footer-links">
+      <a href="https://github.com/arunb-lab" target="_blank">GitHub</a>
+      <a href="https://twitter.com/arunbral16" target="_blank">Twitter</a>
+    </div>
+  </footer>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-grid">
+      <div class="contact-left">
+        <div class="section-tag">Get in touch</div>
+        <h2>Let's build<br/><em style="font-style:italic;color:var(--accent);">together</em></h2>
+        <p>Have a project in mind? I respond within 24 hours and offer a free 15-minute call to discuss your needs before we start.</p>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-item-icon">[loc]</div>
+            <div><div class="contact-item-label">Location</div><div class="contact-item-text">Kathmandu, Nepal (Remote-first)</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">[hrs]</div>
+            <div><div class="contact-item-label">Working hours</div><div class="contact-item-text">Mon – Sat, 6 AM – 10 PM NPT (UTC+5:45)</div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">[gh]</div>
+            <div><div class="contact-item-label">GitHub</div><div class="contact-item-text"><a href="https://github.com/arunb-lab" target="_blank" style="color:var(--accent);text-decoration:none;">github.com/arunb-lab ↗</a></div></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">[pay]</div>
+            <div><div class="contact-item-label">Platforms</div><div class="contact-item-text">Upwork · Fiverr · Direct contract</div></div>
+          </div>
+        </div>
+        <div class="availability">
+          <span class="avail-dot"></span>
+          <span class="avail-text"><strong>Available for new projects</strong> — starting immediately</span>
+        </div>
+      </div>
+
+      <div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Your name</label>
+            <input class="form-input" type="text" placeholder="John Smith" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input class="form-input" type="email" placeholder="john@company.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project type</label>
+            <select class="form-input" style="cursor:pointer;">
+              <option value="">Select a service...</option>
+              <option>REST API development (FastAPI / Flask)</option>
+              <option>Python automation script</option>
+              <option>Web scraping / data extraction</option>
+              <option>Linux server setup / deployment</option>
+              <option>Database design (MySQL)</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Budget (USD)</label>
+            <select class="form-input" style="cursor:pointer;">
+              <option>$50 – $100</option>
+              <option>$100 – $300</option>
+              <option>$300 – $500</option>
+              <option>$500+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project details</label>
+            <textarea class="form-input" placeholder="Describe your project, timeline, and any specific requirements..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-copy">© 2026 Arun Baral — Kathmandu, Nepal</div>
+    <div class="footer-links">
+      <a href="https://github.com/arunb-lab" target="_blank">GitHub</a>
+      <a href="https://twitter.com/arunbral16" target="_blank">Twitter</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a[id]').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const navEl = document.getElementById('nav-'+id);
+  if(navEl) navEl.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>30);
+});
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.form-submit');
+  btn.textContent='Message sent ✓';
+  btn.style.background='var(--accent)';
+  setTimeout(()=>{btn.textContent='Send message →';e.target.reset();},3000);
+}
+</script>
+</body>
+</html>
